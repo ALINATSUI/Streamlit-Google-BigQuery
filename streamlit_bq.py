@@ -15,14 +15,8 @@ def run_query(query):
 rows = run_query("SELECT name FROM `bigquery-public-data.thelook_ecommerce.products` LIMIT 15")
 
 st.write("Question 1: Catalog Snapshot")
-# for row in rows:
-    # st.write(row['name'] + row['brand'] + row['category'] + row['retail_price'])
-    # st.write(row['name'])
-# col1, col2, col3, col4 = st.columns(4)
-# for row in rows:
-#         # st.write(row['name'])
-#         st.write(row['brand'])
-f = pd.read_csv("query1.csv")
+
+f = pd.read_csv("query.csv")
 query1_df = pd.DataFrame(f)
 st.dataframe(query1_df)
 
