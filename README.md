@@ -16,3 +16,5 @@ Some challenges with this project were:
 3. For some reason, the initial installation of Google auth modules weren't successfully installed the first time, which resulted in "No module found."
 
 The second part of this project involved coding out Python, pandas on Streamlit platform. This was a great learning experience that challenged me which I found to be rewarding. 
+
+https://bq--catalog.streamlit.app/
