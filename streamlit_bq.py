@@ -13,10 +13,58 @@ def run_query(query):
     return rows
 
 rows = run_query("SELECT name FROM `bigquery-public-data.thelook_ecommerce.products` LIMIT 15")
-
+st.title('TLab: SQL Project')
 st.write("Question 1: Catalog Snapshot")
 
 f = pd.read_csv("query.csv")
 query1_df = pd.DataFrame(f)
-st.dataframe(query1_df)
+st.dataframe(query1_df, height='content')
+
+code = '''def run_query(query):
+    query_job = client.query(query)
+    rows_raw = query_job.result()
+    rows = [dict(row) for row in rows_raw]
+    return rows
+rows1 = run_query("SELECT name FROM `bigquery-public-data.thelook_ecommerce.products` LIMIT 15")    
+'''
+st.code(code, language="python")
+st.divider(width='stretch')
+
+
+
+# with st.expander(label='Question 2: Premium Products', width='stretch'):
+
+#     st.write('''Finance wants a list of all products with a retail_price greater than $200. Show the product name, brand, and retail_price, sorted from most expensive to least expensive.''')
+q2 = st.container(
+    width='stretch', 
+    height='content', 
+    border=True,
+    autoscroll=True,
+
+    )
+q2.header('Question 2: Premium Products')
+q2.subheader(body = '''
+         Finance wants a list of all products with a retail_price greater than $200. Show the product name, brand, and retail_price, sorted from most expensive to least expensive.''', anchor=False)
+# rows2 = run_query("SELECT ")    
+
+q3 = st.container(
+    width='stretch', 
+    height='content', 
+    autoscroll=True, 
+    border=True, 
+    )
+q3.header('Question 3: Profit Margin Calculation')
+q3.subheader(body='''How many products does TheLook carry in each category? Show the category name and the total count, sorted from largest category to smallest.
+💡 Tip: Group your rows by category and count what falls inside each group.
+
+''', anchor=False)
+
+
+st.divider(width='stretch')
+q4 = st.container(width='stretch', height='content', autoscroll=True, border=True)
+q4.header('Question 4: Category Inventory Count')
+q4.subheader(body='''How many products does TheLook carry in each category? Show the category name and the total count, sorted from largest category to smallest.
+💡 Tip: Group your rows by category and count what falls inside each group.
+''', anchor=False)
+
 
