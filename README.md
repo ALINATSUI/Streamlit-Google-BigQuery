@@ -1,4 +1,4 @@
-Using a public dataset available on Google Cloud BigQuery, I used SQL queries to answer 3 business questions:
+Using a public dataset library available on Google Cloud BigQuery([bigquery-public-data](https://console.cloud.google.com/bigquery)) , I used SQL queries to answer 3 business questions:
 1. What are the names, brands and category of product catalog?
 2. What are product name, brand and retail  price (sorted from most expensive to least)?
 3. Profit margin calculation of each product
