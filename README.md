@@ -7,7 +7,7 @@ To make this project more interesting and technically challenging(!), I've conne
 data web apps. 
 
 Some challenges with this project were:
-1.  While I did have a personal email account for Google Cloud, I discovered that I could not make use of organizational features such as creating private keys which I needed to authenticate.
+1.  While I did have a personal email account for Google Cloud, I discovered that I could not make use of organizational features such as service account creation since this was disabled on the org level as a proactive measure. 
     As I had a private domain, I added in TXT/CNAME records for domain verification purposes that allowed me to create a free account for Google Cloud Identity. Cloud Identity acts as
    the centralized directory from a single platform.
 
