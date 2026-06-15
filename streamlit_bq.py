@@ -6,13 +6,13 @@ credentials = service_account.Credentials.from_service_account_info(
 )
 client = bigquery.Client(credentials=credentials)
 @st.cache_data(ttl=600)
-def run_query(query):
-    query_job = client.query(query)
-    rows_raw = query_job.result()
-    rows = [dict(row) for row in rows_raw]
-    return rows
+# def run_query(query):
+#     query_job = client.query(query)
+#     rows_raw = query_job.result()
+#     rows = [dict(row) for row in rows_raw]
+#     return rows
 
-rows = run_query("SELECT name,brand,retail_price,category FROM `bigquery-public-data.thelook_ecommerce.products` LIMIT 15")
+# rows = run_query("SELECT name,brand,retail_price,category FROM `bigquery-public-data.thelook_ecommerce.products` LIMIT 15")
 st.title('TLab: SQL Project')
 st.write("Question 1: Catalog Snapshot")
 
@@ -27,14 +27,14 @@ f1_df.rename(columns={
 }, inplace=True)
 st.dataframe(f1_df, height='content')
 
-code = '''def run_query(query):
-    query_job = client.query(query)
-    rows_raw = query_job.result()
-    rows = [dict(row) for row in rows_raw]
-    return rows
-rows1 = run_query("SELECT name FROM `bigquery-public-data.thelook_ecommerce.products` LIMIT 15")    
-'''
-st.code(code, language="python")
+# code = '''def run_query(query):
+#     query_job = client.query(query)
+#     rows_raw = query_job.result()
+#     rows = [dict(row) for row in rows_raw]
+#     return rows
+# rows1 = run_query("SELECT name FROM `bigquery-public-data.thelook_ecommerce.products` LIMIT 15")    
+# '''
+# st.code(code, language="python")
 st.divider(width='stretch')
 
 
@@ -61,7 +61,7 @@ f2_df.rename(columns={
     'name' : 'PRODUCT NAME', 
     'brand' : 'BRAND'
 }, inplace=True)
-st.dataframe(f2_df, height='content')
+st.dataframe(f2_df)
 st.divider()
 
 q3 = st.container(
@@ -90,10 +90,10 @@ f3_df.rename(columns={
 st.dataframe(f3_df)
 st.divider(width='stretch')
 
-# q4 = st.container(width='stretch', height='content', autoscroll=True, border=True)
-# q4.header('Question 4: Category Inventory Count')
-# q4.subheader(body='''How many products does TheLook carry in each category? Show the category name and the total count, sorted from largest category to smallest.
-# 💡 Tip: Group your rows by category and count what falls inside each group.
-# ''', anchor=False)
+q4 = st.container(width='stretch', height='content', autoscroll=True, border=True)
+q4.header('Question 4: Category Inventory Count')
+q4.subheader(body='''How many products does TheLook carry in each category? Show the category name and the total count, sorted from largest category to smallest.
+💡 Tip: Group your rows by category and count what falls inside each group.
+''', anchor=False)
 
 
