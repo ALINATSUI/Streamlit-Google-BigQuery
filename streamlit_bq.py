@@ -6,13 +6,13 @@ credentials = service_account.Credentials.from_service_account_info(
 )
 client = bigquery.Client(credentials=credentials)
 @st.cache_data(ttl=600)
-# def run_query(query):
-#     query_job = client.query(query)
-#     rows_raw = query_job.result()
-#     rows = [dict(row) for row in rows_raw]
-#     return rows
+def run_query(query):
+    query_job = client.query(query)
+    rows_raw = query_job.result()
+    rows = [dict(row) for row in rows_raw]
+    return rows
 
-# rows = run_query("SELECT name,brand,retail_price,category FROM `bigquery-public-data.thelook_ecommerce.products` LIMIT 15")
+rows = run_query("SELECT name,brand,retail_price,category FROM `bigquery-public-data.thelook_ecommerce.products` LIMIT 15")
 st.title('TLab: SQL Project')
 st.write("Question 1: Catalog Snapshot")
 
