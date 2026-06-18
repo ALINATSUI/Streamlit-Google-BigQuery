@@ -1,6 +1,4 @@
-
-
-import streamlit as st, pandas as pd, 
+import streamlit as st, pandas as pd
 from google.oauth2 import service_account
 from google.cloud import bigquery
 credentials = service_account.Credentials.from_service_account_info(
