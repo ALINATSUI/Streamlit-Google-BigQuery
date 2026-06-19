@@ -8,7 +8,6 @@ client = bigquery.Client(credentials=credentials)
 @st.cache_data(ttl=600)
 
 
-
 def run_query(query):
     query_job = client.query(query)
     rows_raw = query_job.result()
@@ -31,33 +30,21 @@ q1.subheader(body = '''
 
 ''')
 
-
-
-
-# f_1 = pd.read_csv("q1.csv")
-# f1_df = pd.DataFrame(f_1)
-# f1_df.rename(columns={
-#     'retail_price': 'RETAIL_PRICE($)',
-#     'name': 'PRODUCT NAME',
-#     'brand': 'BRAND',
-#     'category': 'CATEGORY',
+row1_df = pd.DataFrame(row1)
+row1_df.rename(columns={
+    'retail_price': 'RETAIL_PRICE($)',
+    'name': 'PRODUCT NAME',
+    'brand': 'BRAND',
+    'category': 'CATEGORY'
     
-# }, inplace=True)
-st.dataframe(pd.DataFrame(row1), height='content')
+}, inplace=True)
+st.dataframe(row1_df, height='content')
 
-# code = '''def run_query(query):
-#     query_job = client.query(query)
-#     rows_raw = query_job.result()
-#     rows = [dict(row) for row in rows_raw]
-#     return rows
-# rows1 = run_query("SELECT name FROM `bigquery-public-data.thelook_ecommerce.products` LIMIT 15")    
-# '''
-# st.code(code, language="python")
+
+
 st.divider(width='stretch')
 
-# with st.expander(label='Question 2: Premium Products', width='stretch'):
 
-#     st.write('''Finance wants a list of all products with a retail_price greater than $200. Show the product name, brand, and retail_price, sorted from most expensive to least expensive.''')
 q2 = st.container(
     width='stretch', 
     height='content', 
@@ -70,14 +57,15 @@ q2.subheader(body = '''
          Finance wants a list of all products with a retail_price greater than $200. Show the product name, brand, and retail_price, sorted from most expensive to least expensive.''', anchor=False)
 rows2 = run_query("SELECT name, brand, retail_price FROM `bigquery-public-data.thelook_ecommerce.products`")   
 
-# f2 = pd.read_csv('q2.csv')
-# f2_df = pd.DataFrame(f2)
-# f2_df.rename(columns={
-#     'retail_price' : 'RETAIL PRICE($)',
-#     'name' : 'PRODUCT NAME', 
-#     'brand' : 'BRAND'
-# }, inplace=True)
-st.dataframe(pd.DataFrame(rows2))
+
+rows2_df = pd.DataFrame(rows2)
+rows2_df.rename(columns={
+    'retail_price' : 'RETAIL PRICE($)',
+ 'name' : 'PRODUCT NAME', 
+'brand' : 'BRAND'
+}, inplace=True)
+
+st.dataframe(rows2_df)
 st.divider()
 
 q3 = st.container(
@@ -94,19 +82,19 @@ Calculate the gross profit margin for each product. Gross profit margin is defin
 
 ''', anchor=False)
 row3 = run_query(
-    "SELECT cost,retail_price, name, retail_price-cost AS profit_margin " \
-"FROM `bigquery-public-data.thelook_ecommerce.products`" \
-"ORDER BY profit_margin DESC" \
-"")
-# f3 = pd.read_csv('q3.csv')
-# f3_df = pd.DataFrame(f3)
-# f3_df.rename(columns={
-#     'cost': 'COST($)',
-#     'retail_price': 'RETAIL_PRICE($)',
-#     'profit_margin': 'PROFIT_MARGIN($)',
-#     'name': 'PRODUCT NAME'
-# }, inplace=True)
-st.dataframe(pd.DataFrame(row3))
+    "SELECT cost, retail_price, name, ROUND((retail_price - cost), 2) " \
+        "AS profit_margin FROM `bigquery-public-data.thelook_ecommerce." \
+        "products` ORDER BY profit_margin DESC")
+
+rows3_df = pd.DataFrame(row3)
+rows3_df.rename(columns={
+    'cost': 'COST($)',
+    'retail_price': 'RETAIL_PRICE($)',
+    'profit_margin': 'PROFIT_MARGIN($) - DESC',
+    'name': 'PRODUCT NAME'
+}, inplace=True)
+
+st.dataframe(rows3_df, width='stretch')
 st.divider(width='stretch')
 
 q4 = st.container(width='stretch', height='content', autoscroll=True, border=True)
@@ -119,8 +107,13 @@ row4 = run_query("SELECT category, COUNT(*) AS CATEGORY_COUNT " \
 "FROM `bigquery-public-data.thelook_ecommerce.products` " \
 "GROUP BY category " \
 "ORDER BY 2 DESC")
-st.dataframe(pd.DataFrame(row4))
+row4_df = pd.DataFrame(row4)
+row4_df.rename(columns={
+    'category': 'CATEGORY'
+})
+st.dataframe(row4_df)
 st.divider(width='stretch')
+
 
 q5 = st.container(width='stretch', height='content', autoscroll=True, border=True)
 q5.header('Question 5: Department Split')
@@ -131,6 +124,11 @@ q5.subheader(body='''
 row5 = run_query("SELECT department, COUNT(*) AS UNIQUE_PRODUCTS " \
 "FROM `bigquery-public-data.thelook_ecommerce.products` " \
 "GROUP BY department")
+row5_df = pd.DataFrame(row5)
+row5_df.rename(columns={
+    'department': 'DEPT',
+    'UNIQUE_PRODUCTS': 'UNIQUE_PROD_COUNT'
+})
 st.dataframe(pd.DataFrame(row5))
 st.divider(width='stretch')
 
@@ -143,7 +141,15 @@ q6.subheader(body= '''
 row6 = run_query("SELECT category, department, name, brand, retail_price " \
 "FROM `bigquery-public-data.thelook_ecommerce.products` " \
 "WHERE category = 'Outerwear & Coats' AND department = 'Women'")
-st.dataframe(pd.DataFrame(row6))
+row6_df = pd.DataFrame(row6)
+row6_df.rename(columns={
+    'category': 'CATEGORY',
+    'department': 'DEPT', 
+    'name': 'ITEM NAME', 
+    'brand': 'BRAND',
+    'retail_price': 'RETAIL_PRICE($)'
+}, inplace=True)
+st.dataframe(row6_df, width='content')
 st.divider(width='stretch')
 
 q7 = st.container(width='stretch', height='content', autoscroll=True, border=True)
@@ -155,7 +161,14 @@ q7.subheader(body='''
 row7 = run_query("SELECT category, ROUND(AVG(retail_price), 2) " \
 "AS AVG_RETAIL_PRICE FROM `bigquery-public-data.thelook_ecommerce.products` " \
 "GROUP BY category ORDER BY 2 DESC")
-st.dataframe(pd.DataFrame(row7))
+row7_df = pd.DataFrame(row7)
+row7_df.rename(columns={
+    'category': 'CATEGORY',
+    'AVG_RETAIL_PRICE': 'RETAIL PRICE AVG ($) - DESC',
+
+}, inplace=True)
+
+st.dataframe(pd.DataFrame(row7_df))
 st.divider(width='stretch')
 
 
