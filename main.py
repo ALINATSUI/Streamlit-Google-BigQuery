@@ -1,4 +1,4 @@
-import os
+from os import environ
 
 # Streamlit app URL from environment variable (or default)
 STREAMLIT_URL = os.environ.get("STREAMLIT_APP_URL", "https://bq--catalog.streamlit.app/")
