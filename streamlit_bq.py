@@ -6,7 +6,7 @@ credentials = service_account.Credentials.from_service_account_info(
 )
 from st_aggrid import AgGrid, GridOptionsBuilder, ColumnsAutoSizeMode
 client = bigquery.Client(credentials=credentials)
-
+# st.set_page_config(layout="wide")
 @st.cache_data(ttl=600)
 
 def run_query(query):
@@ -39,8 +39,9 @@ row1_df.rename(columns={
     'category': 'CATEGORY'
     
 }, inplace=True)
-row1_AgGrid_return = AgGrid(row1_df)
-# st.dataframe(row1_df, height='content')
+# row1_AgGrid_return = AgGrid(row1_df)
+
+st.dataframe(row1_df)
 st.divider(width='stretch')
 
 
@@ -63,8 +64,8 @@ rows2_df.rename(columns={
  'name' : 'PRODUCT NAME', 
 'brand' : 'BRAND'
 }, inplace=True)
-rows2_AgGrid_return = AgGrid(rows2_df)
-# st.dataframe(rows2_df)
+
+st.dataframe(rows2_df)
 st.divider()
 
 q3 = st.container(
@@ -88,8 +89,8 @@ rows3_df.rename(columns={
     'profit_margin': 'PROFIT_MARGIN($) - DESC',
     'name': 'PRODUCT NAME'
 }, inplace=True)
-rows3_AgGrid_return = AgGrid(rows3_df)
-# st.dataframe(rows3_df, width='stretch')
+# rows3_AgGrid_return = AgGrid(rows3_df)
+st.dataframe(rows3_df, width='stretch')
 st.divider(width='stretch')
 
 q4 = st.container(width='stretch', height='content', autoscroll=True, border=True)
@@ -128,15 +129,15 @@ row5_AgGrid_return = AgGrid(row5_df)
 # st.dataframe(pd.DataFrame(row5))
 st.divider(width='stretch')
 
-# q6 = st.container(width='content', height='content', autoscroll=True, border=True)
-# q6.header('Question 6: Women\'s Outerwear')
-# q6.subheader(body= '''
-#             Find all products in the 'Outerwear & Coats' category that belong to the 'Women' department. Show the product name, brand, and retail_price.
-# 💡 Tip: You will need to filter on two columns at the same time and so both conditions must be true.
-# ''', anchor=False)
+q6 = st.container(width='content', height='content', autoscroll=True, border=True)
+q6.header('Question 6: Women\'s Outerwear')
+q6.subheader(body= '''
+            Find all products in the 'Outerwear & Coats' category that belong to the 'Women' department. Show the product name, brand, and retail_price.
+💡 Tip: You will need to filter on two columns at the same time and so both conditions must be true.
+''', anchor=False)
 
-q6 = st.write(""" Question 6 : Find all products in the 'Outerwear & Coats' category that belong to the 'Women' department. Show the product name, brand, and retail_price.
-💡 Tip: You will need to filter on two columns at the same time and so both conditions must be true.""")
+# q6 = st.write(""" Question 6 : Find all products in the 'Outerwear & Coats' category that belong to the 'Women' department. Show the product name, brand, and retail_price.
+# 💡 Tip: You will need to filter on two columns at the same time and so both conditions must be true.""")
 row6 = run_query("""SELECT category, department, name, brand, ROUND((retail_price), 2) retail_price
 FROM `bigquery-public-data.thelook_ecommerce.products` 
 WHERE category = 'Outerwear & Coats' AND department = 'Women'""")
@@ -149,7 +150,8 @@ row6_df.rename(columns={
     'brand': 'BRAND',
     'retail_price': 'RETAIL_PRICE ($)'
 }, inplace=True)
-row6_AgGrid_return = AgGrid(row6_df)
+# row6_AgGrid_return = AgGrid(row6_df)
+st.dataframe(row6_df)
 
 st.divider(width='stretch')
 
