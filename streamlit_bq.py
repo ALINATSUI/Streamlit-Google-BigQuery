@@ -1,15 +1,16 @@
 import streamlit as st, pandas as pd
 from google.oauth2 import service_account
 from google.cloud import bigquery
+from st_aggrid import AgGrid, GridOptionsBuilder, ColumnsAutoSizeMode
+
 credentials = service_account.Credentials.from_service_account_info(
     st.secrets["gcp_service_account"]
 )
-from st_aggrid import AgGrid, GridOptionsBuilder, ColumnsAutoSizeMode
+
 client = bigquery.Client(credentials=credentials)
 # st.set_page_config(layout="wide")
-@st.cache_data(ttl=600)
 
-def run_query(query):
+def run_query(query: str):
     query_job = client.query(query)
     rows_raw = query_job.result()
     rows = [dict(row) for row in rows_raw]
@@ -55,6 +56,7 @@ q2 = st.container(
 q2.header('Question 2: Premium Products')
 q2.subheader(body = '''
          Finance wants a list of all products with a retail_price greater than $200. Show the product name, brand, and retail_price, sorted from most expensive to least expensive.''', anchor=False)
+
 rows2 = run_query(""" SELECT ROUND((retail_price), 2) retail_price, name, brand FROM `bigquery-public-data.thelook_ecommerce.products` WHERE retail_price > 200 ORDER BY retail_price DESC """)   
 
 
@@ -79,6 +81,7 @@ q3.subheader(body='''
 Calculate the gross profit margin for each product. Gross profit margin is defined as the difference between retail_price and cost. Name this new column profit_margin. Show the product name, retail_price, cost, and profit_margin, sorted by highest margin first.
 💡 Tip: You can subtract one column from another directly inside SELECT, then give the result a clean name using AS.
 ''', anchor=False)
+
 row3 = run_query(
     '''SELECT ROUND((cost), 2) cost, retail_price, name, ROUND((retail_price - cost),2) AS profit_margin FROM `bigquery-public-data.thelook_ecommerce.products` ORDER BY profit_margin DESC ''')
 
